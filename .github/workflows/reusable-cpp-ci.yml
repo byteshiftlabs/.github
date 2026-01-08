@@ -1,0 +1,126 @@
+name: Reusable C++ CI
+
+# Generic CMake + cppcheck + CTest pipeline, parameterized per caller repo.
+# Modeled on gbglow's CI as of 2026-07-31 (cmake 3.14+, cppcheck 2.20.0
+# pinned and built from source, ctest, optional Sphinx docs).
+#
+# cppcheck is built from source and the resulting binary is glibc-bound, so
+# the cache key MUST include the concrete runner image (not runner.os, which
+# is "Linux" for every Ubuntu release and will restore an incompatible
+# binary across releases).
+
+on:
+  workflow_call:
+    inputs:
+      os:
+        description: "Runner image. Must match what the project is developed on."
+        type: string
+        default: "ubuntu-22.04"
+      cppcheck_version:
+        description: "Pinned cppcheck release tag, e.g. 2.20.0"
+        type: string
+        default: "2.20.0"
+      apt_packages:
+        description: "Extra apt packages beyond the C++ baseline, space-separated."
+        type: string
+        default: ""
+      src_dir:
+        description: "Directory cppcheck should analyze."
+        type: string
+        default: "src"
+      suppressions_file:
+        description: "Path to a cppcheck suppressions file, or empty to skip."
+        type: string
+        default: "cppcheck.suppressions"
+      cmake_args:
+        description: "Extra arguments passed to the CMake configure step."
+        type: string
+        default: "-DCMAKE_BUILD_TYPE=Release"
+      run_tests:
+        description: "Run ctest after building."
+        type: boolean
+        default: true
+      build_docs:
+        description: "Build Sphinx docs from docs/ and upload as an artifact."
+        type: boolean
+        default: false
+      docs_requirements:
+        description: "Path to the docs Python requirements file."
+        type: string
+        default: "docs/requirements.txt"
+
+permissions:
+  contents: read
+
+jobs:
+  build-test:
+    runs-on: ${{ inputs.os }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential cmake git pkg-config ${{ inputs.apt_packages }}
+
+      - name: Restore cached cppcheck
+        id: cppcheck-cache
+        uses: actions/cache@v4
+        with:
+          path: .tools/cppcheck-${{ inputs.cppcheck_version }}
+          key: ${{ inputs.os }}-cppcheck-${{ inputs.cppcheck_version }}
+
+      - name: Bootstrap cppcheck
+        if: steps.cppcheck-cache.outputs.cache-hit != 'true'
+        run: |
+          set -euo pipefail
+          version="${{ inputs.cppcheck_version }}"
+          install_dir=".tools/cppcheck-${version}"
+          curl -L "https://github.com/danmar/cppcheck/archive/refs/tags/${version}.tar.gz" -o /tmp/cppcheck.tar.gz
+          mkdir -p /tmp/cppcheck-src
+          tar -xzf /tmp/cppcheck.tar.gz -C /tmp/cppcheck-src --strip-components=1
+          cmake -S /tmp/cppcheck-src -B /tmp/cppcheck-build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX="$(pwd)/${install_dir}"
+          cmake --build /tmp/cppcheck-build -j"$(nproc)"
+          cmake --install /tmp/cppcheck-build
+
+      - name: Configure
+        run: cmake -S . -B build ${{ inputs.cmake_args }}
+
+      - name: Build
+        run: cmake --build build -j"$(nproc)"
+
+      - name: Test
+        if: inputs.run_tests
+        run: ctest --test-dir build --output-on-failure
+
+      - name: Static analysis
+        run: |
+          set -euo pipefail
+          cppcheck_bin=".tools/cppcheck-${{ inputs.cppcheck_version }}/bin/cppcheck"
+          args=(--enable=warning,style,performance,portability --error-exitcode=1 --inline-suppr "${{ inputs.src_dir }}")
+          if [ -n "${{ inputs.suppressions_file }}" ] && [ -f "${{ inputs.suppressions_file }}" ]; then
+            args+=(--suppressions-list="${{ inputs.suppressions_file }}")
+          fi
+          "$cppcheck_bin" "${args[@]}"
+
+      - name: Set up Python for docs
+        if: inputs.build_docs
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Build documentation
+        if: inputs.build_docs
+        run: |
+          python3 -m venv .docs-venv
+          . .docs-venv/bin/activate
+          python -m pip install --upgrade pip
+          python -m pip install -r "${{ inputs.docs_requirements }}"
+          make -C docs html
+
+      - name: Upload documentation artifact
+        if: inputs.build_docs
+        uses: actions/upload-artifact@v4
+        with:
+          name: docs-html
+          path: docs/_build/html
