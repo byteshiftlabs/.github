@@ -26,6 +26,23 @@ hand when this file changes.
 
 ## Pull requests
 
+Use these three sections, in this order. This is the established
+byteshiftlabs convention — don't invent a different structure per PR:
+
+```markdown
+## Summary
+
+What changed and why. The problem, stated plainly.
+
+## Changes
+
+How it was done. Organized by theme or file.
+
+## Testing
+
+What was actually run.
+```
+
 - State what changed and why, organized by file or by theme — not a
   chronological narration of the work session.
 - Keep it to what's needed to review the change. A one-file bugfix does not
