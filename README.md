@@ -20,7 +20,7 @@ this file.
 | Path | Purpose | How it applies |
 |---|---|---|
 | `CONTRIBUTING.md`, `SECURITY.md` | Fallback community health files | Automatic — inherited by any repo without its own |
-| `.github/PULL_REQUEST_TEMPLATE.md`, `.github/ISSUE_TEMPLATE/` | PR/issue forms | Automatic — inherited the same way |
+| `.github/PULL_REQUEST_TEMPLATE.md`, `.github/ISSUE_TEMPLATE/` | PR and issue templates | Automatic — inherited the same way |
 | `.github/workflows/reusable-*.yml` | Reusable CI pipelines | Opt-in — a repo's `.github/workflows/ci.yml` calls one with `uses:` |
 | `docs/CLAUDE-CONVENTIONS.md` | Canonical rules for commit/PR/issue/doc writing, for AI agents and humans alike | Manual — copy into each repo's own `CLAUDE.md` |
 | `docs/README-template.md`, `docs/ROADMAP-template.md` | Section skeletons | Manual — used as a starting structure, not synced automatically |
