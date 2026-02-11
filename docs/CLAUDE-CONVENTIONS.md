@@ -1,15 +1,10 @@
 # byteshiftlabs conventions for AI coding agents
 
-This is the canonical source for how commits, PRs, issues, and docs should
-read across every byteshiftlabs repository. It exists so an agent working in
-any single repo produces output indistinguishable from one working in any
-other.
+Canonical rules for commits, PRs, issues, and docs across all byteshiftlabs
+repositories.
 
-Every repo should carry a local `CLAUDE.md` that includes this file's rules —
-either by copying this document in full or by summarizing it faithfully.
-`@`-imports in `CLAUDE.md` only resolve local paths, so this content has to be
-copied into each repo rather than referenced remotely; keep copies in sync by
-hand when this file changes.
+Copy this into each repo's own `CLAUDE.md` — `@`-imports only resolve local
+paths, so it can't be referenced remotely.
 
 ## Commits
 
@@ -26,8 +21,8 @@ hand when this file changes.
 
 ## Pull requests
 
-Use these three sections, in this order. This is the established
-byteshiftlabs convention — don't invent a different structure per PR:
+Use these three sections, in this order — don't invent a different structure
+per PR:
 
 ```markdown
 ## Summary
@@ -43,17 +38,14 @@ How it was done. Organized by theme or file.
 What was actually run.
 ```
 
-- State what changed and why, organized by file or by theme — not a
-  chronological narration of the work session.
-- Keep it to what's needed to review the change. A one-file bugfix does not
-  need a multi-section report; a PR touching several unrelated concerns can.
-- **Verification is a claim, not a formality.** Say plainly what was actually
-  run — tests, a manual build, a live check — and distinguish that from
-  reasoning done by reading the code alone. Never write steps as if they were
-  executed when they were only inferred.
-- Do not pad with impact analysis, threat scenarios, or downstream reasoning
-  beyond what was actually established. If something is speculative, say so
-  in one line instead of building it out as if it were confirmed.
+- Organize by theme or file, never as a narration of the work session.
+- Keep length proportional to the change. A one-file bugfix doesn't need a
+  multi-section report.
+- **Verification is a claim.** Say what was actually run, and mark anything
+  established by reading the code alone. Never write a check as though it
+  were executed when it was inferred.
+- Don't pad with impact analysis or downstream reasoning beyond what was
+  established. Speculative? One line saying so.
 - No hedging about unrelated platforms, toolchains, or use cases the PR
   doesn't touch.
 
@@ -76,37 +68,27 @@ The supporting facts, including what was actually checked and how.
 Possible resolutions, laid out rather than prescribed.
 ```
 
-- State in Context how the issue was found: read the code, reproduced it,
-  hit it in production. This is not optional — it's what lets whoever picks
-  it up calibrate how much to trust the rest of the report.
-- If reproduction steps were not actually run, do not write them as though
-  they were. Say what would settle the question instead.
-- Offer options rather than dictating a single fix, unless there's genuinely
-  only one sensible resolution. If you're willing to implement it, say so.
-- Do not build out severity/impact/exploit-scenario detail beyond what's
-  actually been established. State the mechanism (e.g. "an unchecked index
-  into a buffer sized from input"), not a story about what an attacker could
-  theoretically achieve with it, unless that story has actually been tested.
-- Don't single out one example of a broader class as if it were uniquely
-  affected (e.g. naming one unsupported cartridge type when all unsupported
-  types are equally unsupported) — describe the class.
+- Say in Context how it was found — read the code, reproduced, hit in
+  production. It tells the reader how much to trust the rest.
+- Never write reproduction steps that weren't run. Say what would settle it
+  instead.
+- Offer options rather than dictating one fix. Say if you'll implement it.
+- State the mechanism ("an unchecked index into a buffer sized from input"),
+  not an untested story about what it could lead to.
+- Describe the class, not one arbitrary member of it.
 
 ## Documentation (README / CONTRIBUTING / ROADMAP / SECURITY)
 
-- State the platform and toolchain versions the project is actually
-  developed and tested on, then stop. No "other platforms may work",
-  no "untested rather than unsupported", no invitation for issues/PRs from
-  people on unlisted platforms. Naming the tested configuration is complete
-  information on its own.
-- Every version number, tool requirement, and coverage claim in a doc must be
-  checked against the actual repo state (build files, CI config, test
-  directory) before being written or left standing. Don't inherit a stale
-  claim just because it was already there.
-- A "not yet covered" or "known gap" statement must be re-verified before
-  every edit that touches the surrounding text — these rot fast and silently.
-- Don't repeat the same information (e.g. a dependency install list) in more
-  than one file if it can live in one place and be linked to. Duplication is
-  how these docs drift out of sync with each other and with the code.
+- Name the platform and toolchain actually developed and tested on, then
+  stop. No "other platforms may work", no invitations to users on unlisted
+  ones.
+- Check every version number, tool requirement, and coverage claim against
+  the repo before writing it or leaving it standing. Stale claims already in
+  the file are not exempt.
+- Re-verify "not yet covered" and "known gap" statements on every edit that
+  touches them. They rot silently.
+- Keep shared information (dependency lists, versions) in one file and link
+  to it. Duplication is how these drift.
 
 ## General
 

@@ -1,45 +1,28 @@
-# <project-name> Development Roadmap
+# <project> Development Roadmap
 
-## Purpose
-
-This document tracks feature areas and follow-up work for <project-name>. It
-is a planning document, not a verification report — items listed as
-implemented describe code that exists, not code whose correctness has been
-formally validated.
+A planning document, not a verification report — items under Implemented
+describe code that exists, not code proven correct.
 
 ## Implemented
 
-<What exists in the code today. Describe capability, not intent — if it's
-listed here, it's built and at minimum compiles/runs.>
+<Capability that is built and runs.>
 
 -
 
 ## Known Issues
 
-<Open bugs with a link to their issue. Note whether each has been confirmed
-or only found by code review — see docs/CLAUDE-CONVENTIONS.md.>
+<Open bugs, linked. Note if a finding was only from code review, not run.>
 
 -
 
 ## Ongoing Work
 
-<Work in progress or planned for the near term. Concrete enough that "done"
-is checkable.>
+<In progress or near-term. Concrete enough that "done" is checkable.>
 
 -
 
 ## Not Currently Supported
 
-<Explicitly out of scope right now — described as a category, not by
-picking one example out of a broader unsupported set.>
+<Out of scope, described as a category rather than one example of it.>
 
 -
-
-## Working Notes
-
-- Prefer small, reviewable changes over large mixed refactors
-- Treat README and other user-facing docs as documentation that must stay
-  factual — re-verify claims before every edit, don't inherit stale ones
-- Record open gaps as follow-up work instead of treating them as completed
-  milestones
-- Do not describe untested changes as verified; say what was actually run
