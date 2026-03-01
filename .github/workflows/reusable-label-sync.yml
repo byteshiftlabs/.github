@@ -1,0 +1,94 @@
+name: Reusable Label Sync
+
+# Applies the canonical label set from byteshiftlabs/.github/labels.json to
+# the calling repository. GitHub does not inherit labels the way it inherits
+# community health files, so each repo opts in by calling this workflow.
+#
+# Uses the caller's own GITHUB_TOKEN, so no cross-repo PAT is needed. The
+# caller must grant `issues: write`.
+#
+# Non-destructive by default: labels in the manifest are created or updated,
+# and anything else in the repo is left alone. Set `prune: true` to delete
+# labels that are not in the manifest — that removes them from every issue
+# and PR currently using them, so check what would go first.
+
+on:
+  workflow_call:
+    inputs:
+      prune:
+        description: "Delete labels not present in the manifest. Destructive."
+        type: boolean
+        default: false
+      manifest_ref:
+        description: "Ref of byteshiftlabs/.github to read labels.json from."
+        type: string
+        default: main
+
+permissions:
+  issues: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fetch the canonical label manifest
+        uses: actions/checkout@v4
+        with:
+          repository: byteshiftlabs/.github
+          ref: ${{ inputs.manifest_ref }}
+          path: .label-manifest
+
+      - name: Sync labels
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          PRUNE: ${{ inputs.prune }}
+        run: |
+          set -euo pipefail
+          manifest=.label-manifest/labels.json
+
+          created=0; updated=0; deleted=0
+
+          # Existing labels, one JSON object per line.
+          gh api "repos/$REPO/labels?per_page=100" --paginate \
+            --jq '.[] | {name, color, description: (.description // "")}' > existing.jsonl
+
+          while read -r label; do
+            name=$(jq -r '.name' <<< "$label")
+            color=$(jq -r '.color' <<< "$label")
+            desc=$(jq -r '.description' <<< "$label")
+
+            current=$(grep -F "\"name\":\"$name\"" existing.jsonl || true)
+
+            if [ -z "$current" ]; then
+              gh api -X POST "repos/$REPO/labels" \
+                -f name="$name" -f color="$color" -f description="$desc" > /dev/null
+              echo "created  $name"
+              created=$((created + 1))
+            elif [ "$(jq -cS . <<< "$current")" != "$(jq -cS . <<< "$label")" ]; then
+              gh api -X PATCH "repos/$REPO/labels/$(jq -rn --arg n "$name" '$n|@uri')" \
+                -f new_name="$name" -f color="$color" -f description="$desc" > /dev/null
+              echo "updated  $name"
+              updated=$((updated + 1))
+            fi
+          done < <(jq -c '.[]' "$manifest")
+
+          if [ "$PRUNE" = "true" ]; then
+            while read -r name; do
+              if ! jq -e --arg n "$name" 'any(.[]; .name == $n)' "$manifest" > /dev/null; then
+                gh api -X DELETE "repos/$REPO/labels/$(jq -rn --arg n "$name" '$n|@uri')"
+                echo "deleted  $name"
+                deleted=$((deleted + 1))
+              fi
+            done < <(jq -r '.name' existing.jsonl)
+          fi
+
+          {
+            echo "## Label sync"
+            echo ""
+            echo "| Action | Count |"
+            echo "|---|---|"
+            echo "| created | $created |"
+            echo "| updated | $updated |"
+            echo "| deleted | $deleted |"
+          } >> "$GITHUB_STEP_SUMMARY"
