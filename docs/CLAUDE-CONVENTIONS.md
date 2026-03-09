@@ -27,17 +27,25 @@ per PR:
 ```markdown
 ## Summary
 
-What changed and why. The problem, stated plainly.
+What changed, in a sentence or two.
 
 ## Changes
 
-How it was done. Organized by theme or file.
+One line per change, grouped by theme or file.
 
 ## Testing
 
 What was actually run.
 ```
 
+- **State what changed. Nothing else.** No reasoning for the change, no
+  narration of how a problem was found, no justification of the approach, no
+  explanation of what a tool does or why an alternative was rejected.
+  Explaining the why is the developer's job, not the agent's.
+- Facts a reviewer needs — a corrected value, a count, a removed file — belong
+  in. Sentences beginning "because", "this means", "the cause was", or
+  recounting what was checked and in what order, stay out.
+- A before/after table beats a paragraph explaining a discrepancy.
 - Organize by theme or file, never as a narration of the work session.
 - Keep length proportional to the change. A one-file bugfix doesn't need a
   multi-section report.

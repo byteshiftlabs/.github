@@ -1,10 +1,11 @@
 ## Summary
 
-<!-- The problem, and why it needed changing. -->
+<!-- What changed, in a sentence or two. -->
 
 ## Changes
 
-<!-- How it was done, by theme or file. -->
+<!-- One line per change, grouped by theme or file. State what changed, not
+     why it was done or how it was found. -->
 
 ## Testing
 
