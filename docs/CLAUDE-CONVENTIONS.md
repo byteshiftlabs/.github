@@ -66,10 +66,6 @@ Applies to issue, pull request, and discussion bodies and comments.
   soft line breaks enabled, so a paragraph wrapped at 76 columns becomes a
   stack of 76-column lines and can never use the full width of the page.
 - Tables, code fences, and list markers stay on their own lines as normal.
-- This applies only to text posted to GitHub. Files committed to a repository
-  (`README.md`, `CONTRIBUTING.md`, `.rst` docs) and git commit messages are
-  still wrapped at roughly 72–80 columns, because those are read in editors and
-  terminals that don't reflow.
 
 ## Issues
 
