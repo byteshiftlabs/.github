@@ -42,9 +42,17 @@ What was actually run.
   narration of how a problem was found, no justification of the approach, no
   explanation of what a tool does or why an alternative was rejected.
   Explaining the why is the developer's job, not the agent's.
-- Facts a reviewer needs — a corrected value, a count, a removed file — belong
-  in. Sentences beginning "because", "this means", "the cause was", or
-  recounting what was checked and in what order, stay out.
+- Facts a reviewer needs — a corrected value, a removed file — belong in.
+  Sentences beginning "because", "this means", "the cause was", or recounting
+  what was checked and in what order, stay out.
+- **Leave out numbers that only measure the size of the work.** How many lines
+  a file went from and to, how many symbols, directives, call sites or files
+  were touched, how many warnings a tool printed: these will probably never be
+  of any interest to anyone. Write "generated `api.rst` from the sources",
+  not "132 hand-written symbols to 1,085, 1,491 lines to 216".
+- A number is worth writing when the number *is* the fact: a value the
+  documentation stated wrongly and now states correctly, a version, a size a
+  reader has to match. A corrected-figures table is exactly this.
 - A before/after table beats a paragraph explaining a discrepancy.
 - Organize by theme or file, never as a narration of the work session.
 - Keep length proportional to the change. A one-file bugfix doesn't need a
