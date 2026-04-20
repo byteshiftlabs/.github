@@ -24,6 +24,7 @@ this file.
 | `.github/workflows/reusable-*.yml` | Reusable CI pipelines | Opt-in — a repo's `.github/workflows/ci.yml` calls one with `uses:` |
 | `.github/workflows/reusable-label-sync.yml`, `labels.json` | Canonical label set | Opt-in — a repo calls it from its own `labels.yml`; see [docs/label-sync.md](docs/label-sync.md) |
 | `docs/CLAUDE-CONVENTIONS.md` | Canonical rules for commit/PR/issue/doc writing, for AI agents and humans alike | Manual — copy into each repo's own `CLAUDE.md` |
+| `docs/prose-style.md` | Catalogue of stylistic tropes that mark prose as machine-written, with a grep set for the mechanical ones | Manual — read alongside `CLAUDE-CONVENTIONS.md` when writing or reviewing any prose |
 | `docs/README-template.md`, `docs/ROADMAP-template.md` | Section skeletons | Manual — used as a starting structure, not synced automatically |
 
 Repo-specific files (an actual `CONTRIBUTING.md` with real build commands,
