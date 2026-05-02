@@ -24,6 +24,7 @@ this file.
 | `.github/workflows/reusable-*.yml` | Reusable CI pipelines | Opt-in — a repo's `.github/workflows/ci.yml` calls one with `uses:` |
 | `.github/workflows/reusable-label-sync.yml`, `labels.json` | Canonical label set | Opt-in — a repo calls it from its own `labels.yml`; see [docs/label-sync.md](docs/label-sync.md) |
 | `docs/CLAUDE-CONVENTIONS.md` | Canonical rules for commit/PR/issue/doc writing, for AI agents and humans alike | Manual — copy into each repo's own `CLAUDE.md` |
+| `docs/repo-integrity-audit.md` | Checklist-driven audit for repo integrity and quality (architecture, docs, code, tests, security, release) | Manual — run over an existing repo (audit), or while drafting a new one's contents (creation) |
 | `docs/README-template.md`, `docs/ROADMAP-template.md` | Section skeletons | Manual — used as a starting structure, not synced automatically |
 
 Repo-specific files (an actual `CONTRIBUTING.md` with real build commands,
