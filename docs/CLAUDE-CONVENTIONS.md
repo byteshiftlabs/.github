@@ -59,12 +59,30 @@ What was actually run.
 
 ## Issues
 
-- Open with a one-line statement of how the issue was found: read the code,
-  reproduced it, hit it in production, etc. This is not optional — it's what
-  lets whoever picks it up calibrate how much to trust the rest of the report.
-- If reproduction steps were not actually run, do not write a "Reproduction"
-  or "How to reproduce" section. Use something like "What would confirm or
-  kill it" instead, describing what a reader could do to settle the question.
+Use these three sections, in this order:
+
+```markdown
+## Summary
+
+What's wrong, and exactly where. Link the specific line with a permalink
+pinned to a commit SHA, not a branch — branch links rot as lines move.
+
+## Context
+
+The supporting facts, including what was actually checked and how.
+
+## Options
+
+Possible resolutions, laid out rather than prescribed.
+```
+
+- State in Context how the issue was found: read the code, reproduced it,
+  hit it in production. This is not optional — it's what lets whoever picks
+  it up calibrate how much to trust the rest of the report.
+- If reproduction steps were not actually run, do not write them as though
+  they were. Say what would settle the question instead.
+- Offer options rather than dictating a single fix, unless there's genuinely
+  only one sensible resolution. If you're willing to implement it, say so.
 - Do not build out severity/impact/exploit-scenario detail beyond what's
   actually been established. State the mechanism (e.g. "an unchecked index
   into a buffer sized from input"), not a story about what an attacker could
