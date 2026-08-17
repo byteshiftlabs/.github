@@ -90,6 +90,18 @@ Possible resolutions, laid out rather than prescribed.
 - Keep shared information (dependency lists, versions) in one file and link
   to it. Duplication is how these drift.
 
+## Third-party material
+
+- Don't reference copyrighted or trademarked material where a neutral
+  alternative works. Examples, placeholders, sample data and test fixtures
+  get generic names — `game.gb`, not `tetris.gb`.
+- Naming a real product is fine when it states a technical fact the reader
+  needs ("the header must match the Nintendo logo", "MBC5 was used by
+  Pokémon Crystal"). That's descriptive, and removing it would make the
+  documentation wrong. It's arbitrary filler that causes trouble.
+- Same test for media: no screenshots or recordings of commercial games in
+  a README. Use homebrew with a known license, or the project's own UI.
+
 ## General
 
 - When a claim in this file or in repo docs turns out to be wrong or
