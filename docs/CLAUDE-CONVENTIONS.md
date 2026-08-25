@@ -105,6 +105,12 @@ Possible resolutions, laid out rather than prescribed.
 
 ## Documentation (README / CONTRIBUTING / ROADMAP / SECURITY)
 
+- **Stick to what is implemented.** Describe the code as it is, not as it
+  could be or should be. Do not include anything that is not in the
+  implementation without the creator's approval or supervision. This covers
+  invented sections as much as invented sentences: a "recommended learning
+  path", a "what and why" rationale, a suggested reading order, a design a
+  subsystem does not have.
 - Name the platform and toolchain actually developed and tested on, then
   stop. No "other platforms may work", no invitations to users on unlisted
   ones.
