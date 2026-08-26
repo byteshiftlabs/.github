@@ -122,6 +122,18 @@ Possible resolutions, laid out rather than prescribed.
 - Keep shared information (dependency lists, versions) in one file and link
   to it. Duplication is how these drift.
 
+## Prose style
+
+- **Prose that reads as machine-written is a defect.** Em-dash addiction,
+  negative parallelism ("it's not X, it's Y"), "it's worth noting", bold-first
+  bullets, unicode decoration and signposted conclusions all cost the text its
+  authority regardless of whether the content is correct. The full catalogue,
+  with a grep set for the mechanical patterns, is in
+  [prose-style.md](prose-style.md).
+- Apply it on an editing pass, not while drafting.
+- Never trade accuracy for style. If removing a construction would make the
+  sentence less true, leave it and say why in review.
+
 ## Third-party material
 
 - Don't reference copyrighted or trademarked material where a neutral
